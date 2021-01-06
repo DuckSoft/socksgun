@@ -1,5 +1,5 @@
 # socksgun
-A Dead-Simple SOCKS Proxy over gRPC (based on [gun](https://github.com/Qv2ray/gun))
+A Dead-Simple SOCKS Proxy over gRPC (based on [gun](https://socksgun))
 > 🚧 NOTE: Working In Progress
 
 ## License

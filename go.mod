@@ -1,4 +1,4 @@
-module github.com/Qv2ray/gun
+module socksgun
 
 go 1.15
 
