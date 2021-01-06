@@ -78,17 +78,16 @@ func init() {
 func init() { proto.RegisterFile("gun.proto", fileDescriptor_5eb68c7936423302) }
 
 var fileDescriptor_5eb68c7936423302 = []byte{
-	// 151 bytes of a gzipped FileDescriptorProto
+	// 139 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4c, 0x2f, 0xcd, 0xd3,
 	0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x57, 0xb2, 0xe1, 0x62, 0x0b, 0x48, 0x4c, 0xce, 0x4e, 0x2d, 0x11,
 	0x92, 0xe0, 0x62, 0x4f, 0xce, 0xcf, 0x2b, 0x49, 0xcd, 0x2b, 0x91, 0x60, 0x52, 0x60, 0xd4, 0xe0,
 	0x09, 0x82, 0x71, 0x41, 0x32, 0x05, 0x89, 0x29, 0x29, 0x99, 0x79, 0xe9, 0x12, 0xcc, 0x10, 0x19,
-	0x28, 0xd7, 0xc8, 0x8f, 0x8b, 0x3f, 0x38, 0x3f, 0x39, 0xbb, 0xd8, 0xbd, 0x34, 0x2f, 0x38, 0xb5,
+	0x28, 0xd7, 0x48, 0x8f, 0x8b, 0x3f, 0x38, 0x3f, 0x39, 0xbb, 0xd8, 0xbd, 0x34, 0x2f, 0x38, 0xb5,
 	0xa8, 0x2c, 0x33, 0x39, 0x55, 0x48, 0x9a, 0x8b, 0x39, 0xa4, 0x34, 0x4f, 0x88, 0x5d, 0x0f, 0x62,
-	0xac, 0x14, 0x8c, 0xa1, 0xc1, 0x68, 0xc0, 0x28, 0x24, 0xc7, 0xc5, 0x16, 0x52, 0x9a, 0x17, 0xea,
-	0x12, 0x80, 0x5d, 0xde, 0x49, 0x24, 0x4a, 0xa8, 0x18, 0x64, 0x5e, 0x7a, 0x69, 0x9e, 0x7e, 0x41,
-	0x76, 0xba, 0x3e, 0xd8, 0x8d, 0x49, 0x6c, 0x60, 0xca, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x98,
-	0xed, 0xa2, 0x1f, 0xb7, 0x00, 0x00, 0x00,
+	0xac, 0x14, 0x8c, 0xa1, 0xc1, 0x68, 0xc0, 0xe8, 0x24, 0x12, 0x25, 0x54, 0x0c, 0x52, 0x9f, 0x5e,
+	0x9a, 0xa7, 0x5f, 0x90, 0x9d, 0xae, 0x0f, 0x76, 0x43, 0x12, 0x1b, 0x98, 0x32, 0x06, 0x04, 0x00,
+	0x00, 0xff, 0xff, 0x76, 0xdc, 0x46, 0x66, 0x97, 0x00, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -104,7 +103,6 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type SocksGunServiceClient interface {
 	Tun(ctx context.Context, opts ...grpc.CallOption) (SocksGunService_TunClient, error)
-	TunUDP(ctx context.Context, opts ...grpc.CallOption) (SocksGunService_TunUDPClient, error)
 }
 
 type socksGunServiceClient struct {
@@ -146,41 +144,9 @@ func (x *socksGunServiceTunClient) Recv() (*Packet, error) {
 	return m, nil
 }
 
-func (c *socksGunServiceClient) TunUDP(ctx context.Context, opts ...grpc.CallOption) (SocksGunService_TunUDPClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_SocksGunService_serviceDesc.Streams[1], "/SocksGunService/TunUDP", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &socksGunServiceTunUDPClient{stream}
-	return x, nil
-}
-
-type SocksGunService_TunUDPClient interface {
-	Send(*Packet) error
-	Recv() (*Packet, error)
-	grpc.ClientStream
-}
-
-type socksGunServiceTunUDPClient struct {
-	grpc.ClientStream
-}
-
-func (x *socksGunServiceTunUDPClient) Send(m *Packet) error {
-	return x.ClientStream.SendMsg(m)
-}
-
-func (x *socksGunServiceTunUDPClient) Recv() (*Packet, error) {
-	m := new(Packet)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 // SocksGunServiceServer is the server API for SocksGunService service.
 type SocksGunServiceServer interface {
 	Tun(SocksGunService_TunServer) error
-	TunUDP(SocksGunService_TunUDPServer) error
 }
 
 // UnimplementedSocksGunServiceServer can be embedded to have forward compatible implementations.
@@ -189,9 +155,6 @@ type UnimplementedSocksGunServiceServer struct {
 
 func (*UnimplementedSocksGunServiceServer) Tun(srv SocksGunService_TunServer) error {
 	return status.Errorf(codes.Unimplemented, "method Tun not implemented")
-}
-func (*UnimplementedSocksGunServiceServer) TunUDP(srv SocksGunService_TunUDPServer) error {
-	return status.Errorf(codes.Unimplemented, "method TunUDP not implemented")
 }
 
 func RegisterSocksGunServiceServer(s *grpc.Server, srv SocksGunServiceServer) {
@@ -224,32 +187,6 @@ func (x *socksGunServiceTunServer) Recv() (*Packet, error) {
 	return m, nil
 }
 
-func _SocksGunService_TunUDP_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(SocksGunServiceServer).TunUDP(&socksGunServiceTunUDPServer{stream})
-}
-
-type SocksGunService_TunUDPServer interface {
-	Send(*Packet) error
-	Recv() (*Packet, error)
-	grpc.ServerStream
-}
-
-type socksGunServiceTunUDPServer struct {
-	grpc.ServerStream
-}
-
-func (x *socksGunServiceTunUDPServer) Send(m *Packet) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func (x *socksGunServiceTunUDPServer) Recv() (*Packet, error) {
-	m := new(Packet)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 var _SocksGunService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "SocksGunService",
 	HandlerType: (*SocksGunServiceServer)(nil),
@@ -258,12 +195,6 @@ var _SocksGunService_serviceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "Tun",
 			Handler:       _SocksGunService_Tun_Handler,
-			ServerStreams: true,
-			ClientStreams: true,
-		},
-		{
-			StreamName:    "TunUDP",
-			Handler:       _SocksGunService_TunUDP_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},

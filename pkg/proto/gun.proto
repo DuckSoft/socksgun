@@ -8,5 +8,4 @@ message Packet {
 
 service SocksGunService {
   rpc Tun (stream Packet) returns (stream Packet);
-  rpc TunUDP (stream Packet) returns (stream Packet);
 }
